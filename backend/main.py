@@ -109,3 +109,46 @@ def get_30_day_history(station_id: str):
         "timestamp",
         "water_level_m_bgl"
     ]].to_dict(orient="records")
+
+
+@app.get("/api/availability/{station_id}")
+def get_availability(station_id: str):
+    sdf = groundwater_df[
+        groundwater_df["station_id"] == station_id
+    ].sort_values("timestamp").tail(1)
+
+    if sdf.empty:
+        return {"error": "Invalid station_id"}
+
+    row = sdf.iloc[0]
+
+    rainfall = row["rainfall_mm"]
+    season = row["season"]
+
+    # Recharge factors (domain-based)
+    recharge_factor = {
+        "Monsoon": 0.20,
+        "Post-Monsoon": 0.10,
+        "Summer": 0.05
+    }.get(season, 0.08)
+
+    recharge = rainfall * recharge_factor
+
+    # Dummy demand estimation (can be improved later)
+    demand = 0.6 * recharge
+
+    availability = recharge - demand
+
+    sustainability = (
+        "Sustainable" if availability > 0 else "Over-Exploited"
+    )
+
+    return {
+        "station_id": station_id,
+        "rainfall_mm": rainfall,
+        "season": season,
+        "estimated_recharge_mm": round(recharge, 2),
+        "estimated_demand_mm": round(demand, 2),
+        "available_groundwater_mm": round(availability, 2),
+        "status": sustainability
+    }
