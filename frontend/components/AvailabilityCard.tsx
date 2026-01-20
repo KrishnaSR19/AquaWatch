@@ -21,58 +21,56 @@ export default function AvailabilityCard({
 
   if (!data) return null;
 
+  const isSustainable = data.available_groundwater_mm > 0;
+
   return (
-    <div className="bg-white p-6 rounded-xl shadow">
-      <h2 className="text-xl font-semibold mb-4">
+    <div className="bg-white p-6 rounded-2xl shadow border border-gray-200">
+      <h2 className="text-lg font-semibold mb-4 text-black">
         💧 Recharge & Availability
       </h2>
 
-      <div className="grid grid-cols-2 gap-4 text-sm">
+      <div className="grid grid-cols-2 gap-4 text-sm text-black">
         <div>
-          Rainfall (mm)
+          <div className="text-black/70">Rainfall (mm)</div>
           <div className="font-semibold">{data.rainfall_mm}</div>
         </div>
 
         <div>
-          Season
+          <div className="text-black/70">Season</div>
           <div className="font-semibold">{data.season}</div>
         </div>
 
         <div>
-          Estimated Recharge (mm)
-          <div className="font-semibold text-blue-600">
+          <div className="text-black/70">Estimated Recharge (mm)</div>
+          <div className="font-semibold">
             {data.estimated_recharge_mm}
           </div>
         </div>
 
         <div>
-          Estimated Demand (mm)
-          <div className="font-semibold text-orange-600">
+          <div className="text-black/70">Estimated Demand (mm)</div>
+          <div className="font-semibold">
             {data.estimated_demand_mm}
           </div>
         </div>
 
         <div className="col-span-2">
-          Available Groundwater (mm)
-          <div
-            className={`font-bold text-lg ${
-              data.available_groundwater_mm > 0
-                ? "text-green-600"
-                : "text-red-600"
-            }`}
-          >
+          <div className="text-black/70">
+            Available Groundwater (mm)
+          </div>
+          <div className="font-bold text-lg">
             {data.available_groundwater_mm}
           </div>
         </div>
       </div>
 
-      <div className="mt-4">
-        Status:
+      <div className="mt-4 flex items-center gap-2 text-sm text-black">
+        <span>Status:</span>
         <span
-          className={`ml-2 font-semibold ${
-            data.status === "Sustainable"
-              ? "text-green-600"
-              : "text-red-600"
+          className={`px-2 py-0.5 rounded-full border text-xs font-semibold ${
+            isSustainable
+              ? "bg-gray-100 border-gray-300"
+              : "bg-red-50 border-red-300"
           }`}
         >
           {data.status}
