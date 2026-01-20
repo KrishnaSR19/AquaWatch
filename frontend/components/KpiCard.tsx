@@ -18,27 +18,47 @@ export default function KpiCard({
   bg = "bg-blue-50"
 }: KpiCardProps) {
   return (
-    <div className={`rounded-2xl p-6 flex justify-between items-center ${bg}`}>
-      <div>
-        <p className="text-sm text-gray-600">{title}</p>
-        <h2 className="text-3xl font-bold mt-1">{value}</h2>
+    <div
+      className={`relative rounded-2xl p-5 flex justify-between items-center ${bg}
+        transition-transform duration-200 hover:-translate-y-1 hover:shadow-md`}
+    >
+      {/* Left Content */}
+      <div className="space-y-1">
+        <p className="text-xs font-medium tracking-wide text-gray-500 uppercase">
+          {title}
+        </p>
+
+        <h2 className="text-3xl font-semibold text-gray-900 leading-tight">
+          {value}
+        </h2>
 
         {trend && (
-          <p
-            className={`text-sm mt-1 ${
-              trendColor === "green" ? "text-green-600" : "text-red-600"
+          <div
+            className={`inline-flex items-center gap-1 text-xs font-medium ${
+              trendColor === "green"
+                ? "text-green-600"
+                : "text-red-600"
             }`}
           >
+            <span className="text-sm">
+              {trendColor === "green" ? "↑" : "↓"}
+            </span>
             {trend}
-          </p>
+          </div>
         )}
 
-        <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
+        <p className="text-xs text-gray-500">
+          {subtitle}
+        </p>
       </div>
 
-      <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow">
+      {/* Icon */}
+      <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-white/80 shadow-sm">
         {icon}
       </div>
+
+      {/* Accent Bar */}
+      <span className="absolute inset-x-0 bottom-0 h-[3px] rounded-b-2xl bg-black/10" />
     </div>
   );
 }
