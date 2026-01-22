@@ -19,3 +19,9 @@ export async function fetchForecast(stationId: string) {
   const res = await fetch(`${API_BASE}/api/forecast/${stationId}`);
   return res.json();
 }
+
+export async function fetchSummary() {
+  const res = await fetch("http://127.0.0.1:8000/api/summary");
+  return res.json();
+}
+
